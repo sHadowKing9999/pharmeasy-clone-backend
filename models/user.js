@@ -1,6 +1,21 @@
 const mongoose = require("mongoose");
 var passportLocalMongoose = require("passport-local-mongoose");
 const Schema = mongoose.Schema;
+const cartItemSchema = new Schema(
+  {
+    productId: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Product",
+    },
+    quantity: {
+      type: Number,
+      required: true,
+    },
+  },
+  {
+    timestamps: true,
+  }
+);
 const Address = new Schema({
   streetaddress: {
     type: String,
@@ -49,6 +64,7 @@ var User = new Schema({
     default: false,
   },
   address: Address,
+  cart: [cartItemSchema],
 });
 User.plugin(passportLocalMongoose);
 module.exports = mongoose.model("User", User);

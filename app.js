@@ -11,6 +11,7 @@ var authenticate = require("./authenticate");
 var indexRouter = require("./routes/index");
 var usersRouter = require("./routes/users");
 var productRouter = require("./routes/productRouter");
+const cartRouter = require("./routes/cartRouter");
 var app = express();
 const mongoose = require("mongoose");
 mongoose.Promise = require("bluebird");
@@ -39,6 +40,7 @@ app.use(passport.initialize());
 
 app.use("/", indexRouter);
 app.use("/users", usersRouter);
+app.use("/cart", cartRouter);
 app.use(express.static(path.join(__dirname, "public")));
 
 app.use("/products", productRouter);
