@@ -58,6 +58,40 @@ productRouter
         .catch((err) => next(err));
     }
   );
+productRouter
+  .route("/all")
+  .post(authenticate.verifyUser, authenticate.verifyAdmin, (req, res, next) => {
+    if (req.body.products != null) {
+      req.body.products.map((product) => {
+        Products.create(product)
+          .then(
+            (product) => {
+              console.log("product created ", product);
+            },
+            (err) => next(err)
+          )
+          .catch((err) => {
+            console.log("Cannot Create Product");
+            return next(err);
+          });
+      });
+      Products.find({})
+        .populate("comments.author", "firstname lastname")
+        .then(
+          (product) => {
+            res.statusCode = 200;
+            res.setHeader("Content-Type", "application/json");
+            res.json(product);
+          },
+          (err) => next(err)
+        )
+        .catch((err) => next(err));
+    } else {
+      err = new Error("products not provided as body ");
+      err.statusCode = 405;
+      return next(err);
+    }
+  });
 productRouter.route("/medicines").get((req, res, next) => {
   Products.find({ category: config.category.medicine })
 
