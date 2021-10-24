@@ -19,7 +19,10 @@ const url = config.mongoUrl;
 const cors = require("cors");
 app.use(
   cors({
-    origin: ["http://localhost:3000", "223.187.157.203/32"],
+    origin: [
+      "http://localhost:3000",
+      "https://pharmeasy-clone-frontend.vercel.app",
+    ],
   })
 );
 mongoose.connect(url, { useNewUrlParser: true, useUnifiedTopology: true }).then(
